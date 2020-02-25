@@ -18,13 +18,15 @@
 #include "crypto.h"
 #include "streaming.h"
 
+#include "driver/gpio.h"
+
 #define STREAMING_STATUS_AVAILABLE 0
 #define STREAMING_STATUS_IN_USE 1
 #define STREAMING_STATUS_UNAVAILABLE 2
 
 
 static ip4_addr_t ip_address;
-
+bool motion_detect = false;
 
 void camera_accessory_set_ip_address(ip4_addr_t ip) {
     ip_address = ip;
@@ -556,8 +558,23 @@ void camera_on_event(homekit_event_t event) {
 }
 
 
+homekit_value_t motion_get() {
+    return HOMEKIT_BOOL(motion_detect);
+}
+
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Woverride-init"
+
+homekit_service_t motion =
+    HOMEKIT_SERVICE_(MOTION_SENSOR, .characteristics=(homekit_characteristic_t*[]){
+        HOMEKIT_CHARACTERISTIC(NAME, "HomeKid Motion"),
+        HOMEKIT_CHARACTERISTIC(MOTION_DETECTED, 0, .getter=motion_get),
+        NULL
+    });
+
+homekit_characteristic_t name = HOMEKIT_CHARACTERISTIC_(NAME, NULL);
+homekit_characteristic_t serial = HOMEKIT_CHARACTERISTIC_(SERIAL_NUMBER, NULL);
+
 homekit_accessory_t *accessories[] = {
     HOMEKIT_ACCESSORY(.id=1,
                       .category=homekit_accessory_category_ip_camera,
@@ -565,11 +582,11 @@ homekit_accessory_t *accessories[] = {
                       .services=(homekit_service_t*[])
     {
         HOMEKIT_SERVICE(ACCESSORY_INFORMATION, .characteristics=(homekit_characteristic_t*[]){
-            HOMEKIT_CHARACTERISTIC(NAME, "Camera"),
-            HOMEKIT_CHARACTERISTIC(MANUFACTURER, "HaPK"),
-            HOMEKIT_CHARACTERISTIC(SERIAL_NUMBER, "1"),
-            HOMEKIT_CHARACTERISTIC(MODEL, "1"),
-            HOMEKIT_CHARACTERISTIC(FIRMWARE_REVISION, "0.1"),
+            &name,
+            HOMEKIT_CHARACTERISTIC(MANUFACTURER, "HomeKid™"),
+            &serial,
+            HOMEKIT_CHARACTERISTIC(MODEL, " ESP32 Camera"),
+            HOMEKIT_CHARACTERISTIC(FIRMWARE_REVISION, "0.0.1"),
             HOMEKIT_CHARACTERISTIC(IDENTIFY, camera_identify),
             NULL
         }),
@@ -598,12 +615,16 @@ homekit_accessory_t *accessories[] = {
                 .setter=camera_selected_rtp_configuration_set
             ),
             NULL
+        }, .linked=(homekit_service_t*[]) {
+            &motion,
+            NULL
         }),
         HOMEKIT_SERVICE(MICROPHONE, .characteristics=(homekit_characteristic_t*[]){
             HOMEKIT_CHARACTERISTIC(VOLUME, 0),
             HOMEKIT_CHARACTERISTIC(MUTE, false),
             NULL
         }),
+        &motion,
         NULL
     }),
     NULL
@@ -618,10 +639,22 @@ homekit_server_config_t config = {
     .on_resource = camera_on_resource,
 };
 
+void create_accessory_name() {    
+    uint8_t macaddr[6];
+    system_efuse_read_mac(macaddr);
+    
+    char *name_value = malloc(17);
+    snprintf(name_value, 17, "HomeKid-%02X%02X%02X", macaddr[3], macaddr[4], macaddr[5]);
+    name.value = HOMEKIT_STRING(name_value);
+    
+    char *serial_value = malloc(13);
+    snprintf(serial_value, 13, "%02X%02X%02X%02X%02X%02X", macaddr[0], macaddr[1], macaddr[2], macaddr[3], macaddr[4], macaddr[5]);
+    serial.value = HOMEKIT_STRING(serial_value);
+}
 
 void camera_accessory_init() {
     ESP_LOGI(TAG, "Free heap: %d", xPortGetFreeHeapSize());
-
+    create_accessory_name();
     // ESP_ERROR_CHECK(gpio_install_isr_service(0));
 #if CONFIG_LED_PIN >= 0
     gpio_set_direction(CONFIG_LED_PIN, GPIO_MODE_OUTPUT);
