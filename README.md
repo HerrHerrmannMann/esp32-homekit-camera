@@ -1,4 +1,4 @@
-# ESP32 Camera bsed  HomeKit IP Camera
+# ESP32 Camera based  HomeKit IP Camera
 Firmware for ESP32-Cam module to act as  Homekit IP camera.
 
 ------
