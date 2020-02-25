@@ -8,6 +8,8 @@ Firmware for ESP32-Cam module to act as  Homekit IP camera.
 
 **This project uses the Apple HomeKit accessory server library [ESP-HomeKit](https://github.com/maximkulkin/esp-homekit) from [@MaximKulkin](https://github.com/maximkulkin) for [ESP-IDF](https://github.com/espressif/esp-idf) from [Espressif](https://www.espressif.com).** <br/>
 
+My Version of esp32-homekit-camera only differs in it has an _empty_ Motion Sensor yet! 
+
 ## Configuration
 
 Before compiling, you need to alter several settings in menuconfig (`make
