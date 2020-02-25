@@ -1,8 +1,12 @@
-# esp32-homekit-camera
+# ESP32 Camera bsed  HomeKit IP Camera
+Firmware for ESP32-Cam module to act as  Homekit IP camera.
 
-Firmware for esp32-camera module to act as Apple Homekit IP camera.
+------
+[![Instagram URL](https://img.shields.io/twitter/url/https/www.instagram.com/homekidd?label=Follow&logo=instagram&style=social)](https://www.instagram.com/homekidd) [![FaceBook URL](https://img.shields.io/twitter/url/https/www.facebook.com/HomeKiid?label=Like&logo=facebook&style=social)](https://www.facebook.com/HomeKiid) [![YouTube URL](https://img.shields.io/twitter/url/https/www.youtube.com/channel/UCkqC_6j1uyYVv7SO3jPe7KA?label=Follow&logo=youtube&style=social)](https://www.youtube.com/channel/UCkqC_6j1uyYVv7SO3jPe7KA)
+------
 
-Based on [esp-homekit](https://github.com/maximkulkin/esp-homekit).
+
+**This project uses the Apple HomeKit accessory server library [ESP-HomeKit](https://github.com/maximkulkin/esp-homekit) from [@MaximKulkin](https://github.com/maximkulkin) for [ESP-IDF](https://github.com/espressif/esp-idf) from [Espressif](https://www.espressif.com).** <br/>
 
 ## Configuration
 
@@ -25,3 +29,15 @@ menuconfig`):
     * WiFi SSID and WiFi Password
     * Camera Pins
         * Select Camera Pinout = *[Your version of ESP32 Cam module](https://github.com/HomeKidd/esp32-homekit-camera/wiki/Hardware-Setup)*
+
+
+
+Although already forbidden by the sources and subsequent licensing, it is not allowed to use or distribute this software for a commercial purpose.<br/><br/>
+
+<img src="https://freepngimg.com/thumb/apple_logo/25366-7-apple-logo-file.png" width="20"/> 
+
+###### HomeKit Accessory Protocol (HAP) is Apple’s proprietary protocol that enables third-party accessories in the home (e.g., lights, thermostats and door locks) and Apple products to communicate with each other. HAP supports two transports, IP and Bluetooth LE. The information provided in the HomeKit Accessory Protocol Specification (Non-Commercial Version) describes how to implement HAP in an accessory that you create for non-commercial use and that will not be distributed or sold.
+
+###### The HomeKit Accessory Protocol Specification (Non-Commercial Version) can be downloaded from the [HomeKit Apple Developer page.](https://developer.apple.com/homekit/)
+
+###### Copyright © 2019 Apple Inc. All rights reserved.
