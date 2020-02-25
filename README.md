@@ -24,4 +24,4 @@ menuconfig`):
 * ESP32 HomeKit Camera
     * WiFi SSID and WiFi Password
     * Camera Pins
-        * Select Camera Pinout = *your variant of module*
+        * Select Camera Pinout = *[Your version of ESP32 Cam module](https://github.com/HomeKidd/esp32-homekit-camera/wiki/Hardware-Setup)*
