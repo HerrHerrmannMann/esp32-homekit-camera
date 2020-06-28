@@ -20,7 +20,8 @@ Firmware for ESP32-Cam module to act as  Homekit IP camera.
 Before compiling, you need to alter several settings in menuconfig (`make
 menuconfig`):
 
-1. Choose `Partition Table` ![Partition Table](readme_images/part_table.png)
+1. Choose `Partition Table` 
+![Partition Table](readme_images/part_table.png)
 	
 	Choose **(old_file.csv or nothing) Custom partition CSV file**
     	![Partition Table](readme_images/part_table2.png)
@@ -35,7 +36,6 @@ menuconfig`):
    ![esp32-specific](readme_images/esp32-specific2.png)
         
 	**Check** `Initialize SPI RAM when booting the ESP32` and then select `SPI RAM access method`
-    
     ![esp32-specific](readme_images/spi-ram-menu.png)
     
     **Check** `Make RAM allocatable using malloc() as well`
@@ -43,6 +43,7 @@ menuconfig`):
     
      and then go back to the `Component config` and choose `Camera configuration`
     ![esp32-specific](readme_images/camera-configuration.png)
+    
     then **check** `OV2640 Support`
     ![esp32-specific](readme_images/camera-configuration2.png)
     
@@ -50,7 +51,6 @@ menuconfig`):
     ![esp32-specific](readme_images/homekit.png)
     
     then choose `SPI flash address for storing HomeKit data` and write the value `0x3A0000`
-    
     ![esp32-specific](readme_images/homekit2.png)
     
 3. Choose `ESP32 HomeKit Camera`
