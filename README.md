@@ -19,23 +19,44 @@ Firmware for ESP32-Cam module to act as  Homekit IP camera.
 
 Before compiling, you need to alter several settings in menuconfig (`make
 menuconfig`):
-* Partition Table
-    * Partition Table = **Custom partition table CSV**
-    * Custom partition CSV file = **partitions.csv**
-* Component config
-    * ESP32-specific
-        * Support for external, SPI-connected RAM = **check**
-        * SPI RAM config
-            * Initialize SPI RAM when booting the ESP32 = **check**
-            * SPI RAM access method = **Make RAM allocatable using malloc() as well**
-    * Camera configuration
-        * OV2640 Support = **check**
-    * HomeKit
-        * SPI flash address for storing HomeKit data = 0x3A0000
-* ESP32 HomeKit Camera
-    * WiFi SSID and WiFi Password
-    * Camera Pins
-        * Select Camera Pinout = *[Your version of ESP32 Cam module](https://github.com/HomeKidd/esp32-homekit-camera/wiki/Hardware-Setup)*
+
+1. Choose `Partition Table` ![Partition Table](readme_images/part_table.png)
+	
+	Choose **(old_file.csv or nothing) Custom partition CSV file**
+    	![Partition Table](readme_images/part_table2.png)
+   Set **partitions.csv**
+    	![Partition Table](readme_images/part_table3.png)
+    	
+2. Choose `Component config`
+   Choose `ESP32-specific` ![esp32-specific](readme_images/esp32-specific.png)
+   
+   **Check** `Support for external, SPI-connected RAM` and then select `SPI RAM config` menu
+   
+   ![esp32-specific](readme_images/esp32-specific2.png)
+        
+	**Check** `Initialize SPI RAM when booting the ESP32` and then select `SPI RAM access method`
+    
+    ![esp32-specific](readme_images/spi-ram-menu.png)
+    
+    **Check** `Make RAM allocatable using malloc() as well`
+    ![esp32-specific](readme_images/spi-ram-menu2.png)
+    
+     and then go back to the `Component config` and choose `Camera configuration`
+    ![esp32-specific](readme_images/camera-configuration.png)
+    then **check** `OV2640 Support`
+    ![esp32-specific](readme_images/camera-configuration2.png)
+    
+    Go back to the `Component config` and choose `Homekit`
+    ![esp32-specific](readme_images/homekit.png)
+    
+    then choose `SPI flash address for storing HomeKit data` and write the value `0x3A0000`
+    
+    ![esp32-specific](readme_images/homekit2.png)
+    
+3. Choose `ESP32 HomeKit Camera`
+	Then choose your WiFi SSID and Password
+    
+	Then choose `Camera Pins` in which you have to choose the `Select Camera Pinout` accordingly with [your version of ESP32 Cam module](https://github.com/HomeKidd/esp32-homekit-camera/wiki/Hardware-Setup).
 
 
 
