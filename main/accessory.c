@@ -639,14 +639,14 @@ homekit_server_config_t config = {
     .on_resource = camera_on_resource,
 };
 
-void create_accessory_name() {    
+void create_accessory_name() {
     uint8_t macaddr[6];
-    system_efuse_read_mac(macaddr);
-    
+    esp_efuse_mac_get_default(macaddr);
+
     char *name_value = malloc(17);
     snprintf(name_value, 17, "HomeKid-%02X%02X%02X", macaddr[3], macaddr[4], macaddr[5]);
     name.value = HOMEKIT_STRING(name_value);
-    
+
     char *serial_value = malloc(13);
     snprintf(serial_value, 13, "%02X%02X%02X%02X%02X%02X", macaddr[0], macaddr[1], macaddr[2], macaddr[3], macaddr[4], macaddr[5]);
     serial.value = HOMEKIT_STRING(serial_value);
