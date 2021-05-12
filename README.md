@@ -1,3 +1,12 @@
+--> <-- --> <-- --> <-- --> <-- --> <-- --> <-- --> <-- --> <-- --> <-- --> <-- --> <-- --> <-- 
+
+--> This Version included both Versions from esp32-homekit-camera!
+-> The Fork was a modifed "maximkulkin" firmware from "HomeKidd".
+-> The files "streaming.c" and "streaming_session.h" was replaced from maximkulkins Version.
+
+--> <-- --> <-- --> <-- --> <-- --> <-- --> <-- --> <-- --> <-- --> <-- --> <-- --> <-- --> <-- 
+
+
 # ESP32 Camera based  HomeKit IP Camera
 Firmware for ESP32-Cam module to act as  Homekit IP camera.
 
