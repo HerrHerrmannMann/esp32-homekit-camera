@@ -66,7 +66,7 @@ void camera_identify_task(void *_args) {
         vTaskDelay(250 / portTICK_PERIOD_MS);
     }
 
-    led_set(true);
+    led_set(false);
 
     vTaskDelete(NULL);
 }
@@ -567,7 +567,7 @@ homekit_value_t motion_get() {
 
 homekit_service_t motion =
     HOMEKIT_SERVICE_(MOTION_SENSOR, .characteristics=(homekit_characteristic_t*[]){
-        HOMEKIT_CHARACTERISTIC(NAME, "HomeKid Motion"),
+        HOMEKIT_CHARACTERISTIC(NAME, "lahma Motion"),
         HOMEKIT_CHARACTERISTIC(MOTION_DETECTED, 0, .getter=motion_get),
         NULL
     });
@@ -583,10 +583,10 @@ homekit_accessory_t *accessories[] = {
     {
         HOMEKIT_SERVICE(ACCESSORY_INFORMATION, .characteristics=(homekit_characteristic_t*[]){
             &name,
-            HOMEKIT_CHARACTERISTIC(MANUFACTURER, "HomeKid™"),
+            HOMEKIT_CHARACTERISTIC(MANUFACTURER, " de.lahma.dev "),
             &serial,
-            HOMEKIT_CHARACTERISTIC(MODEL, " ESP32 Camera"),
-            HOMEKIT_CHARACTERISTIC(FIRMWARE_REVISION, "0.0.1"),
+            HOMEKIT_CHARACTERISTIC(MODEL, "DIYmore® ESP32Cam™"),
+            HOMEKIT_CHARACTERISTIC(FIRMWARE_REVISION, "0.0.51"),
             HOMEKIT_CHARACTERISTIC(IDENTIFY, camera_identify),
             NULL
         }),
@@ -621,7 +621,7 @@ homekit_accessory_t *accessories[] = {
         }),
         HOMEKIT_SERVICE(MICROPHONE, .characteristics=(homekit_characteristic_t*[]){
             HOMEKIT_CHARACTERISTIC(VOLUME, 0),
-            HOMEKIT_CHARACTERISTIC(MUTE, false),
+            HOMEKIT_CHARACTERISTIC(MUTE, true),
             NULL
         }),
         &motion,
@@ -634,7 +634,8 @@ homekit_accessory_t *accessories[] = {
 
 homekit_server_config_t config = {
     .accessories = accessories,
-    .password = "111-11-111",
+    .password = "197-27-097",
+    .setupId="IDR7",
     .on_event = camera_on_event,
     .on_resource = camera_on_resource,
 };
@@ -644,7 +645,7 @@ void create_accessory_name() {
     esp_efuse_mac_get_default(macaddr);
 
     char *name_value = malloc(17);
-    snprintf(name_value, 17, "HomeKid-%02X%02X%02X", macaddr[3], macaddr[4], macaddr[5]);
+    snprintf(name_value, 17, "lahmaCam-%02X%02X%02X", macaddr[3], macaddr[4], macaddr[5]);
     name.value = HOMEKIT_STRING(name_value);
 
     char *serial_value = malloc(13);
