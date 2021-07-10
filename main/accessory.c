@@ -565,9 +565,11 @@ homekit_value_t motion_get() {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Woverride-init"
 
+homekit_characteristic_t servicename = HOMEKIT_CHARACTERISTIC_(NAME, NULL);
+
 homekit_service_t motion =
     HOMEKIT_SERVICE_(MOTION_SENSOR, .characteristics=(homekit_characteristic_t*[]){
-        HOMEKIT_CHARACTERISTIC(NAME, "lahma Motion"),
+        &servicename,
         HOMEKIT_CHARACTERISTIC(MOTION_DETECTED, 0, .getter=motion_get),
         NULL
     });
@@ -586,7 +588,7 @@ homekit_accessory_t *accessories[] = {
             HOMEKIT_CHARACTERISTIC(MANUFACTURER, " de.lahma.dev "),
             &serial,
             HOMEKIT_CHARACTERISTIC(MODEL, "DIYmore® ESP32Cam™"),
-            HOMEKIT_CHARACTERISTIC(FIRMWARE_REVISION, "0.0.51"),
+            HOMEKIT_CHARACTERISTIC(FIRMWARE_REVISION, "0.0.52"),
             HOMEKIT_CHARACTERISTIC(IDENTIFY, camera_identify),
             NULL
         }),
@@ -643,6 +645,10 @@ homekit_server_config_t config = {
 void create_accessory_name() {
     uint8_t macaddr[6];
     esp_efuse_mac_get_default(macaddr);
+    
+    char *servicename_value = malloc(17);
+    snprintf(servicename_value, 17, "lahmaMotion-%02X%02X%02X", macaddr[3], macaddr[4], macaddr[5]);
+    servicename.value = HOMEKIT_STRING(servicename_value);
 
     char *name_value = malloc(17);
     snprintf(name_value, 17, "lahmaCam-%02X%02X%02X", macaddr[3], macaddr[4], macaddr[5]);
@@ -667,7 +673,8 @@ void camera_accessory_init() {
 
     /* IO13, IO14 is designed for JTAG by default,
      * to use it as generalized input,
-     * firstly declair it as pullup input */
+     * firstly declair it as pullup input
+     * Add IO16 as Pull-Up Input Button */
     gpio_config_t conf;
     conf.mode = GPIO_MODE_INPUT;
     conf.pull_up_en = GPIO_PULLUP_ENABLE;
@@ -676,6 +683,8 @@ void camera_accessory_init() {
     conf.pin_bit_mask = 1LL << 13;
     gpio_config(&conf);
     conf.pin_bit_mask = 1LL << 14;
+    gpio_config(&conf);
+    conf.pin_bit_mask = 1LL << 16;
     gpio_config(&conf);
 
     camera_config_t camera_config = {
